@@ -99,10 +99,14 @@ class LinearSpline(nn.Module):
             # transform to 4D size (N, num_units=num_activations, 1, 1)
             x = x.view(*input_size, 1, 1)
         
-        x = x.mul(self.scaling_factors)
+        if (self.apply_scaling):
+            x = x.mul(self.scaling_factors)
+       
         projected_coefficients_vect = self.projected_coefficients.view(-1)
         x = LinearSpline_Func.apply(x, projected_coefficients_vect, self.x_min, self.x_max, self.grid_size, self.leftmost_coeff_indices)
-        x = x.div(self.scaling_factors)
+        
+        if (self.apply_scaling):
+            x = x.div(self.scaling_factors)
         x = x.view(*input_size)
 
         return x
