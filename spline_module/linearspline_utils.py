@@ -13,7 +13,8 @@ def get_spline_scaling_factors(model):
     scaling_factors_list = []
     for module in model.modules():
         if isinstance(module, LinearSpline):
-            scaling_factors_list.append(module.scaling_factors)
+            if (module.apply_scaling is True):
+                scaling_factors_list.append(module.scaling_factors)
     return scaling_factors_list
 
 
